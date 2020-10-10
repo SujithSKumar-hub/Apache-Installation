@@ -1,0 +1,47 @@
+---
+- name: "Apache On Debian & Ubuntu"
+  become: true
+  hosts: all
+  tasks:
+    
+    - name: "Redhat - Installing Apache Webserver"
+      when: ansible_os_family == "RedHat"
+      yum:
+        name: 
+          - httpd
+          - php
+        state: present
+            
+    - name: "Redhat - Creating index.php"
+      when: ansible_os_family == "RedHat"
+      copy:
+        content: "<?php phpinfo() ?>"
+        dest: /var/www/html/index.php
+
+            
+    - name: "Redhat - Enabling/Restarting Service"
+      when: ansible_os_family == "RedHat"
+      service:
+        name: httpd
+        state: restarted
+        enabled: true
+            
+            
+    - name: "Ubuntu - Installing Apache Webserver"
+      when: ansible_os_family == "Debian"
+      apt:
+        name: apache2,php
+        state: present
+        
+    - name: "Ubuntu- Creating index.php"
+      when: ansible_os_family == "Debian"
+      copy:
+        content: "<?php phpinfo() ?>"
+        dest: /var/www/html/index.php  
+
+    - name: "Ubuntu - Enabling/Restarting Service"
+      when: ansible_os_family == "Debian"
+      service:
+        name: apache2
+        state: restarted
+        enabled: true
