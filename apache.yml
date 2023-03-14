@@ -1,5 +1,5 @@
 ---
-- name: "Apachee On Debian & Ubuntu"
+- name: "Apache On Debian & Ubuntu"
   become: true
   hosts: all
   tasks:
